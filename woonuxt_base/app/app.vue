@@ -20,7 +20,7 @@ watch(
 
 useHead({
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} -  Vasalás Mester` : ' Vasalás Mester';
+    return titleChunk ? `${titleChunk} -  G TEO SPORT` : ' G TEO SPORT';
   }
 })
 </script>

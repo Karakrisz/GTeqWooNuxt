@@ -31,9 +31,9 @@ const onSaleProducts = computed(() => saleProductsData.value);
 </script>
 
 <template>
-  <section class="w-full py-[50px]">
+  <section class="w-full py-[50px] px-6 md:px-0">
     <div class="container product-content">
-      <h2 class="pb-10">AKTUÁLIS AKCIÓINK</h2>
+      <h2 class="text-[#242424] font-black text-[32px] uppercase leading-none mb-10">ASZTALAINK</h2>
 
       <TransitionGroup v-if="pending" name="fade" tag="div" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[24px] pb-[35px]">
         <div v-for="i in 3" :key="i" class="animate-pulse">
@@ -51,9 +51,9 @@ const onSaleProducts = computed(() => saleProductsData.value);
         <ProductRow v-else :products="onSaleProducts" class="pb-[35px]" />
       </template>
 
-      <div class="flex gap-[10px] items-center justify-center">
-        <NuxtLink to="/products" class=""> Tovább az teljes étlapra </NuxtLink>
-        <PhosphorIconArrowRight />
+      <div class="flex gap-[10px] items-center justify-start">
+        <NuxtLink to="/products" class="text-[#242424] hover:text-[#FF5D19] transition-colors"> Tovább az összes termékhez </NuxtLink>
+        <PhosphorIconArrowRight class="text-[#FF5D19]" />
       </div>
     </div>
   </section>

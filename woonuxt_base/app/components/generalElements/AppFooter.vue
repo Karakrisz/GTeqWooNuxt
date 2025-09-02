@@ -1,16 +1,16 @@
 <script setup lang="ts">
 const footerLinks = [
-  { name: 'Mi az a teqball?', link: '/teqball' },
-  { name: 'Termékeink', link: '/products' },
-  { name: 'Kapcsolat', link: '/contact' },
-  { name: 'Kosaram', link: '/cart' },
-  { name: 'Adatkezelési Nyilatkozat', link: '/privacy-policy' },
+  { name: 'Mi az a teqball?', link: '/' },
+  { name: 'Termékeink', link: '/' },
+  { name: 'Kapcsolat', link: '/' },
+  { name: 'Kosaram', link: '/' },
+  { name: 'Adatkezelési Nyilatkozat', link: '/' },
   { name: 'Hivatalos TeqBall oldal', link: 'https://teqball.com', external: true },
 ]
 </script>
 
 <template>
-  <footer class="bg-white">
+  <footer class="bg-[#F3F3F3] mt-[150px]">
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-center gap-8">
         

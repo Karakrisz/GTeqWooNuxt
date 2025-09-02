@@ -10,12 +10,12 @@ const show = ref(initialTab);
 
 <template>
   <div>
-    <nav class="border-b flex gap-8 tabs">
+    <nav class="border-b border-gray-light flex gap-8 tabs">
       <button v-if="product.description" type="button" :class="show === 0 ? 'active' : ''" @click.prevent="show = 0">{{ $t('messages.shop.productDescription') }}</button>
       <button v-if="storeSettings.showReviews" type="button" :class="show === 1 ? 'active' : ''" @click.prevent="show = 1">{{ $t('messages.shop.reviews') }} ({{ product.reviewCount }})</button>
     </nav>
     <div class="tab-contents">
-      <div v-if="show === 0 && product.description" class="font-light mt-8 prose" v-html="product.description" />
+      <div v-if="show === 0 && product.description" class="font-light mt-8 prose text-dark" v-html="product.description" />
       <ProductReviews v-if="show === 1" :product="product" />
     </div>
   </div>
@@ -23,11 +23,11 @@ const show = ref(initialTab);
 
 <style lang="postcss" scoped>
 .tabs button {
-  @apply border-transparent border-b-2 text-lg pb-8;
+  @apply border-transparent border-b-2 text-lg pb-8 text-secondary transition-colors hover:text-primary;
   margin-bottom: -1px;
 }
 
 .tabs button.active {
-  @apply border-primary text-primary;
+  @apply border-[#FF5D19] text-[#FF5D19];
 }
 </style>

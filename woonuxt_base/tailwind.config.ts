@@ -26,7 +26,7 @@ export default {
         'medium': '0px 1px 7px 0px rgba(0, 0, 0, 0.20)'
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Roboto', 'sans-serif'],
       },
     },
     container: {
@@ -38,4 +38,3 @@ export default {
     require('@tailwindcss/forms'),
   ],
 }
-

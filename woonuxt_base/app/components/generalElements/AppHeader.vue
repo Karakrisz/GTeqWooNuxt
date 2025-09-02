@@ -7,7 +7,7 @@ const links = [
 </script>
 
 <template>
-  <header class="z-50 sticky top-0 bg-white py-4">
+  <header class="z-50 top-0 bg-white p-4 px-6 md:px-4">
     <div class="menu container flex justify-between items-center gap-10">
       <!-- Logo bal oldalt -->
       <NuxtLink to="/" class="shrink-0">
@@ -40,7 +40,7 @@ const links = [
           <SignInLink />
           
           <!-- CartTrigger wrapper a narancssárga háttérhez -->
-          <div class="bg-[#FF5D19] rounded-md">
+          <div class="bg-[#FF5D19] rounded-md p-2">
             <CartTrigger class="text-white" />
           </div>
         </div>
@@ -57,6 +57,15 @@ const links = [
   border-radius: 1.5em;
   background: var(--Light-Grey, #F3F3F3);
   padding: 1.3em 2em;
+}
+
+/* Mobil nézetben kisebb padding a belső menünél */
+@media (max-width: 768px) {
+  .menu {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding: 1em 1.2em;
+  }
 }
 
 :deep(.cart-trigger) {

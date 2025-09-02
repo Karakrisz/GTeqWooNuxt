@@ -1,8 +1,8 @@
 <template>
   <main>
     <Hero />
-    <Discounts />
     <AboutSection />
+    <Discounts />
     <ContactSection />
     <!-- <BlogSection /> -->
   </main>

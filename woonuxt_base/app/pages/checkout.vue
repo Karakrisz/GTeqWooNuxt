@@ -71,12 +71,12 @@ useSeoMeta({
   <div class="flex flex-col min-h-[600px]">
     <template v-if="cart && customer">
       <div v-if="cart.isEmpty" class="flex flex-col items-center justify-center flex-1 mb-12">
-        <Icon name="ion:cart-outline" size="156" class="opacity-25 mb-5" />
-        <h2 class="text-2xl font-bold mb-2">{{ $t('messages.shop.cartEmpty') }}</h2>
-        <span class="text-stone-400 mb-4">{{ $t('messages.shop.addProductsInYourCart') }}</span>
+        <Icon name="ion:cart-outline" size="156" class="opacity-25 mb-5 text-gray" />
+        <h2 class="text-2xl font-bold mb-2 text-dark">{{ $t('messages.shop.cartEmpty') }}</h2>
+        <span class="text-secondary mb-4">{{ $t('messages.shop.addProductsInYourCart') }}</span>
         <NuxtLink
           to="/products"
-          class="flex items-center justify-center gap-3 p-2 px-3 mt-4  text-center text-white rounded-lg shadow-md bg-primary hover:bg-primary-dark">
+          class="flex items-center justify-center gap-3 p-2 px-3 mt-4 text-center text-white rounded-md shadow-md bg-[#FF5D19] hover:bg-[#E54A0F] transition-colors">
           {{ $t('messages.shop.browseOurProducts') }}
         </NuxtLink>
       </div>
@@ -85,8 +85,8 @@ useSeoMeta({
         <div class="grid w-full max-w-2xl gap-8 checkout-form md:flex-1">
           <!-- Customer details -->
           <div v-if="!viewer && customer.billing">
-            <h2 class="w-full mb-2 text-2xl  leading-none">Elérhetőség</h2>
-            <p class="mt-1 text-sm text-stone-500">Már van felhasználó fiókja? <a href="/my-account" class="text-primary text-semibold">Bejelentkezés</a>.</p>
+            <h2 class="w-full mb-2 text-2xl leading-none text-dark font-bold">Elérhetőség</h2>
+            <p class="mt-1 text-sm text-secondary">Már van felhasználó fiókja? <a href="/my-account" class="text-[#FF5D19] font-semibold hover:underline">Bejelentkezés</a>.</p>
             <div class="w-full mt-4">
               <label for="email">{{ $t('messages.billing.email') }}</label>
               <input
@@ -114,49 +114,49 @@ useSeoMeta({
               </div>
             </template>
             <div v-if="!viewer" class="flex items-center gap-2 my-2">
-              <label for="creat-account">Felhasználó létrehozása</label>
-              <input id="creat-account" v-model="orderInput.createAccount" type="checkbox" name="creat-account" >
+              <label for="creat-account" class="text-dark">Felhasználó létrehozása</label>
+              <input id="creat-account" v-model="orderInput.createAccount" type="checkbox" name="creat-account" class="accent-[#FF5D19]">
             </div>
           </div>
 
           <div>
-            <h2 class="w-full mb-3 text-2xl ">{{ $t('messages.billing.billingDetails') }}</h2>
+            <h2 class="w-full mb-3 text-2xl text-dark font-bold">{{ $t('messages.billing.billingDetails') }}</h2>
             <BillingDetails v-model="customer.billing" />
           </div>
 
-          <label v-if="cart.availableShippingMethods.length > 0" for="shipToDifferentAddress" class="flex items-center gap-2">
+          <label v-if="cart.availableShippingMethods.length > 0" for="shipToDifferentAddress" class="flex items-center gap-2 text-dark">
             <span>{{ $t('messages.billing.differentAddress') }}</span>
-            <input id="shipToDifferentAddress" v-model="orderInput.shipToDifferentAddress" type="checkbox" name="shipToDifferentAddress" >
+            <input id="shipToDifferentAddress" v-model="orderInput.shipToDifferentAddress" type="checkbox" name="shipToDifferentAddress" class="accent-[#FF5D19]">
           </label>
 
           <Transition name="scale-y" mode="out-in">
             <div v-if="orderInput.shipToDifferentAddress">
-              <h2 class="mb-4 text-xl ">{{ $t('messages.general.shippingDetails') }}</h2>
+              <h2 class="mb-4 text-xl text-dark font-bold">{{ $t('messages.general.shippingDetails') }}</h2>
               <ShippingDetails v-model="customer.shipping" />
             </div>
           </Transition>
 
           <!-- Shipping methods -->
           <div v-if="cart.availableShippingMethods.length">
-            <h3 class="mb-4 ">{{ $t('messages.general.shippingSelect') }}</h3>
+            <h3 class="mb-4 text-dark font-bold">{{ $t('messages.general.shippingSelect') }}</h3>
             <ShippingOptions :options="cart.availableShippingMethods[0].rates" :active-option="cart.chosenShippingMethods[0]" />
           </div>
 
           <!-- Pay methods -->
           <div v-if="paymentGateways?.nodes.length" class="mt-2 col-span-full">
-            <h2 class="mb-4 text-xl ">{{ $t('messages.billing.paymentOptions') }}</h2>
+            <h2 class="mb-4 text-xl text-dark font-bold">{{ $t('messages.billing.paymentOptions') }}</h2>
             <PaymentOptions v-model="orderInput.paymentMethod" class="mb-4" :payment-gateways />
             <StripeElement v-if="stripe" v-show="orderInput.paymentMethod.id == 'stripe'" :stripe @update-element="handleStripeElement" />
           </div>
 
           <!-- Order note -->
           <div>
-            <h2 class="mb-4 text-xl ">{{ $t('messages.shop.orderNote') }} ({{ $t('messages.general.optional') }})</h2>
+            <h2 class="mb-4 text-xl text-dark font-bold">{{ $t('messages.shop.orderNote') }} ({{ $t('messages.general.optional') }})</h2>
             <textarea
               id="order-note"
               v-model="orderInput.customerNote"
               name="order-note"
-              class="w-full min-h-[100px]"
+              class="w-full min-h-[100px] text-dark"
               rows="4"
               :placeholder="$t('messages.shop.orderNotePlaceholder')"/>
           </div>
@@ -164,7 +164,7 @@ useSeoMeta({
 
         <OrderSummary>
           <button
-            class="flex items-center justify-center w-full gap-3 p-3 mt-4  text-center text-white rounded-lg shadow-md bg-primary hover:bg-primary-dark disabled:cursor-not-allowed disabled:bg-stone-400"
+            class="flex items-center justify-center w-full gap-3 p-3 mt-4 text-center text-white rounded-md shadow-md bg-[#FF5D19] hover:bg-[#E54A0F] disabled:cursor-not-allowed disabled:bg-disabled transition-colors"
             :disabled="isCheckoutDisabled">
             {{ buttonText }}<LoadingIcon v-if="isProcessingOrder" color="#fff" size="18" />
           </button>
@@ -183,7 +183,7 @@ useSeoMeta({
 .checkout-form textarea,
 .checkout-form select,
 .checkout-form .StripeElement {
-  @apply bg-white border rounded-md outline-none border-stone-300 shadow-sm w-full py-2 px-4;
+  @apply bg-white border rounded-md outline-none border-gray shadow-sm w-full py-2 px-4 text-dark;
 }
 
 .checkout-form input.has-error,
@@ -192,7 +192,7 @@ useSeoMeta({
 }
 
 .checkout-form label {
-  @apply my-1.5 text-xs text-stone-600 uppercase;
+  @apply my-1.5 text-xs text-secondary uppercase font-medium;
 }
 
 .checkout-form .StripeElement {

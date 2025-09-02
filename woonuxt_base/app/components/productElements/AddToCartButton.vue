@@ -20,8 +20,7 @@ watch(cart, (val) => {
     <button
       v-if="size === 'md'"
       type="submit"
-      class="w-full button button-primary"
-      :class="{ 'button-disabled': disabled }"
+      class="w-full bg-[#FF5D19] hover:bg-[#E54A0F] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-md transition-colors duration-200 flex items-center justify-center gap-2"
       :disabled="disabled"
       @click="isLoading = true">
       <span>{{ addToCartButtonText }}</span>
@@ -31,10 +30,10 @@ watch(cart, (val) => {
     <PhosphorIconPlusCircle
       v-if="size === 'sm' && !isLoading"
       type="submit"
-      class="w-[48px] h-[48px] hover:text-primary cursor-pointer transition rounded-lg flex font-bold text-center gap-4 items-center justify-center focus:outline-none"
-      :class="{ disabled: disabled }"
+      class="w-[48px] h-[48px] hover:text-[#FF5D19] cursor-pointer transition rounded-lg flex font-bold text-center gap-4 items-center justify-center focus:outline-none"
+      :class="{ 'opacity-50 cursor-not-allowed': disabled }"
       :disabled="disabled"
-      @click="isLoading = true"/>
-    <LoadingIcon v-if="size === 'sm' && isLoading" stroke="4" size="46" color="#ffad32" />
+      @click="!disabled && (isLoading = true)"/>
+    <LoadingIcon v-if="size === 'sm' && isLoading" stroke="4" size="46" color="#FF5D19" />
   </div>
 </template>
