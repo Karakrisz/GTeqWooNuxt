@@ -4476,6 +4476,8 @@ export enum PostStatusEnum {
   REQUEST_FAILED = 'REQUEST_FAILED',
   /** Objects with the request-pending status */
   REQUEST_PENDING = 'REQUEST_PENDING',
+  /** Objects with the spam status */
+  SPAM = 'SPAM',
   /** Content marked for deletion but still recoverable */
   TRASH = 'TRASH',
   /** Objects with the wc-cancelled status */
