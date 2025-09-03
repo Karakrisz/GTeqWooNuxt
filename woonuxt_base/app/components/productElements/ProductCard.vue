@@ -8,6 +8,10 @@ const props = defineProps({
   index: { type: Number, default: 1 },
 });
 
+// Lokális loading állapot erre a termékre
+const isAddingToCart = ref(false);
+const isAddedToCart = ref(false);
+
 // example: ?filter=pa_color[green,blue],pa_size[large]
 const filterQuery = ref(route.query?.filter as string);
 const paColor = ref(filterQuery.value?.split('pa_color[')[1]?.split(']')[0]?.split(',') || []);
@@ -37,6 +41,57 @@ const imagetoDisplay = computed<string>(() => {
 // Biztonságos slug kezelés
 const safeSlug = computed(() => props.node.slug || '');
 const productUrl = computed(() => safeSlug.value ? `/product/${decodeURIComponent(safeSlug.value)}` : '#');
+
+// Kosárba helyezés kezelése
+const handleAddToCart = async () => {
+  if (!props.node.databaseId || isAddingToCart.value) return;
+  
+  try {
+    isAddingToCart.value = true;
+    await addToCart({ productId: props.node.databaseId, quantity: 1 });
+    
+    // Siker esetén
+    isAddedToCart.value = true;
+    
+    // Hang lejátszása
+    playAddToCartSound();
+    
+    // 2 másodperc után visszaállítjuk az eredeti állapotot
+    setTimeout(() => {
+      isAddedToCart.value = false;
+    }, 2000);
+    
+  } catch (error) {
+    console.error('Hiba a kosárba helyezés során:', error);
+  } finally {
+    isAddingToCart.value = false;
+  }
+};
+
+// Hang lejátszás
+const playAddToCartSound = () => {
+  try {
+    // Egyszerű "ding" hang AudioContext-tel
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+  } catch (error) {
+    console.log('Hang lejátszás nem sikerült:', error);
+  }
+};
 </script>
 
 <template>
@@ -47,7 +102,7 @@ const productUrl = computed(() => safeSlug.value ? `/product/${decodeURIComponen
       :style="`background-image: url('${imagetoDisplay}')`"
     >
       <!-- Fekete gradient overlay a szöveg olvashatóságáért -->
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30"></div>
     </div>
 
     <!-- Sale Badge -->
@@ -97,17 +152,34 @@ const productUrl = computed(() => safeSlug.value ? `/product/${decodeURIComponen
           </NuxtLink>
 
           <!-- Kosárba gomb -->
-          <NuxtLink 
-            v-if="node.slug" 
-            :to="productUrl" 
-            :title="node.name"
-            class="flex-1 px-6 py-3 bg-[#FF5D19] hover:bg-[#E54A14] text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group"
+          <button 
+            v-if="node.slug && node.databaseId" 
+            @click="handleAddToCart"
+            :disabled="isAddingToCart"
+            :class="[
+              'flex-1 px-6 py-3 font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group',
+              isAddedToCart 
+                ? 'bg-green-500 text-white' 
+                : 'bg-[#FF5D19] hover:bg-[#E54A14] text-white disabled:bg-gray-400'
+            ]"
           >
-            <span>Kosárba</span>
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span v-if="isAddedToCart">Hozzáadva</span>
+            <span v-else-if="isAddingToCart">Hozzáadás...</span>
+            <span v-else>Kosárba</span>
+            
+            <!-- Loading spinner -->
+            <div v-if="isAddingToCart" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            
+            <!-- Checkmark ikon siker esetén -->
+            <svg v-if="isAddedToCart" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            
+            <!-- Kosár ikon alapállapotban -->
+            <svg v-if="!isAddingToCart && !isAddedToCart" class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.6 8M7 13v6a2 2 0 002 2h6a2 2 0 002-2v-6" />
             </svg>
-          </NuxtLink>
+          </button>
         </div>
       </div>
     </div>
